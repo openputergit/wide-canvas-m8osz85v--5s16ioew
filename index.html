@@ -1,0 +1,3102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeonStock - Garment Shop Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00c8;
+            --dark-bg: #0a0a16;
+            --darker-bg: #05050a;
+            --light-bg: #12122a;
+            --text-color: #e0e0ff;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                url('https://images.unsplash.com/photo-1620207418302-439b387441b0?q=80&w=1000');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .neon-border {
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), inset 0 0 5px var(--neon-blue);
+        }
+        
+        .neon-pink-border {
+            border: 1px solid var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink), inset 0 0 5px var(--neon-pink);
+        }
+        
+        .neon-text {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+        
+        .neon-pink-text {
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink);
+        }
+        
+        .glass {
+            background: rgba(18, 18, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+        }
+        
+        .cyber-btn {
+            position: relative;
+            background: var(--darker-bg);
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            padding: 0.5rem 1rem;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-btn:hover {
+            background: var(--neon-blue);
+            color: var(--darker-bg);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+        
+        .cyber-btn-pink {
+            position: relative;
+            background: var(--darker-bg);
+            color: var(--neon-pink);
+            border: 1px solid var(--neon-pink);
+            padding: 0.5rem 1rem;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-btn-pink:hover {
+            background: var(--neon-pink);
+            color: var(--darker-bg);
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+        
+        .cyber-input {
+            background: var(--darker-bg);
+            border: 1px solid var(--neon-blue);
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-input:focus {
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .scanner-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--neon-blue);
+            box-shadow: 0 0 10px 2px var(--neon-blue);
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+        
+        .rotate-logo {
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-blue);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-pink);
+        }
+        
+        /* Tabs */
+        .tab-active {
+            background: rgba(0, 243, 255, 0.1);
+            border-bottom: 2px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        /* Loading animation */
+        .loading {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+        
+        .loading:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-top-color: var(--neon-blue);
+            border-radius: 50%;
+            animation: spinner 0.8s linear infinite;
+        }
+        
+        @keyframes spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Glitch effect */
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--neon-pink);
+            animation: glitch-animation 2s infinite linear alternate-reverse;
+        }
+        
+        .glitch::after {
+            left: -2px;
+            text-shadow: 2px 0 var(--neon-blue);
+            animation: glitch-animation 3s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-animation {
+            0% {
+                clip-path: inset(30% 0 70% 0);
+            }
+            20% {
+                clip-path: inset(60% 0 1% 0);
+            }
+            40% {
+                clip-path: inset(43% 0 1% 0);
+            }
+            60% {
+                clip-path: inset(25% 0 58% 0);
+            }
+            80% {
+                clip-path: inset(75% 0 5% 0);
+            }
+            100% {
+                clip-path: inset(11% 0 79% 0);
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            #printBill, #printBill * {
+                visibility: visible;
+            }
+            
+            #printBill {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+                color: black;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Main Container -->
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Auth Screens -->
+        <div id="authScreens" class="min-h-screen flex items-center justify-center px-4">
+            <div class="glass p-8 max-w-md w-full neon-border">
+                <!-- Logo and Title -->
+                <div class="text-center mb-8">
+                    <div class="inline-block relative mb-4">
+                        <div class="w-20 h-20 mx-auto border-4 border-transparent border-t-[var(--neon-blue)] border-r-[var(--neon-pink)] rounded-full rotate-logo"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="bi bi-bag-check text-3xl neon-text"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-bold glitch neon-text" data-text="NEONSTOCK">NEONSTOCK</h1>
+                    <p class="text-gray-400 mt-2">Futuristic Garment Shop Management</p>
+                </div>
+                
+                <!-- Auth Navigation -->
+                <div class="flex border-b border-[var(--neon-blue)] mb-6">
+                    <button id="loginTab" class="flex-1 py-2 text-center tab-active" onclick="switchTab('login')">LOG IN</button>
+                    <button id="registerTab" class="flex-1 py-2 text-center" onclick="switchTab('register')">REGISTER</button>
+                </div>
+                
+                <!-- Login Form -->
+                <form id="loginForm" class="space-y-4">
+                    <div class="space-y-2">
+                        <label class="block text-sm">EMAIL</label>
+                        <input type="email" id="loginEmail" class="cyber-input w-full rounded" placeholder="your@email.com" required>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm">PASSWORD</label>
+                        <input type="password" id="loginPassword" class="cyber-input w-full rounded" placeholder="••••••••" required>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="mr-2">
+                            <span class="text-sm">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm neon-text">Forgot Password?</a>
+                    </div>
+                    <button type="button" class="cyber-btn w-full rounded" onclick="login()">
+                        ACCESS SYSTEM
+                    </button>
+                </form>
+                
+                <!-- Register Form -->
+                <form id="registerForm" class="space-y-4 hidden">
+                    <div class="space-y-2">
+                        <label class="block text-sm">SHOP NAME</label>
+                        <input type="text" id="shopName" class="cyber-input w-full rounded" placeholder="Your Shop Name" required>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm">EMAIL</label>
+                        <input type="email" id="registerEmail" class="cyber-input w-full rounded" placeholder="your@email.com" required>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm">MOBILE NUMBER</label>
+                        <input type="tel" id="mobileNumber" class="cyber-input w-full rounded" placeholder="+XX XXXXX XXXXX" required>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm">PASSWORD</label>
+                        <input type="password" id="registerPassword" class="cyber-input w-full rounded" placeholder="••••••••" required>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm">CONFIRM PASSWORD</label>
+                        <input type="password" id="confirmPassword" class="cyber-input w-full rounded" placeholder="••••••••" required>
+                    </div>
+                    <button type="button" class="cyber-btn w-full rounded" onclick="register()">
+                        CREATE ACCOUNT
+                    </button>
+                </form>
+                
+                <div class="text-center mt-4 text-sm text-gray-400">
+                    <p>Secure system access via encrypted neural interface</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Dashboard (Hidden Initially) -->
+        <div id="dashboardScreen" class="hidden min-h-screen flex flex-col">
+            <!-- Top Navigation -->
+            <header class="glass neon-border p-4 sticky top-0 z-50">
+                <div class="container mx-auto flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <i class="bi bi-bag-check text-2xl neon-text"></i>
+                        <h1 class="text-xl font-bold neon-text hidden md:block">NEONSTOCK</h1>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <div id="shopNameDisplay" class="hidden md:block neon-text"></div>
+                        <div class="relative">
+                            <button onclick="toggleUserMenu()" class="flex items-center space-x-2 cyber-btn p-2 rounded">
+                                <i class="bi bi-person-circle"></i>
+                                <span class="hidden md:inline">PROFILE</span>
+                            </button>
+                            <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 glass neon-border p-2 rounded">
+                                <div id="userEmail" class="p-2 mb-2 border-b border-[var(--neon-blue)]"></div>
+                                <a href="#" class="block p-2 hover:bg-[rgba(0,243,255,0.1)]" onclick="showProfileSettings()">
+                                    <i class="bi bi-gear mr-2"></i> Settings
+                                </a>
+                                <a href="#" class="block p-2 hover:bg-[rgba(0,243,255,0.1)]" onclick="logout()">
+                                    <i class="bi bi-box-arrow-right mr-2"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Main Content Area -->
+            <div class="flex-1 flex flex-col md:flex-row">
+                <!-- Sidebar Navigation -->
+                <div class="md:w-64 glass neon-border m-4 rounded-lg overflow-hidden md:h-[calc(100vh-120px)]">
+                    <nav class="p-4">
+                        <ul class="space-y-2">
+                            <li>
+                                <button onclick="switchDashboardTab('dashboard')" class="dashboard-nav-btn cyber-btn w-full text-left p-3 rounded flex items-center space-x-3">
+                                    <i class="bi bi-speedometer2"></i>
+                                    <span>Dashboard</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="switchDashboardTab('inventory')" class="dashboard-nav-btn cyber-btn w-full text-left p-3 rounded flex items-center space-x-3">
+                                    <i class="bi bi-box-seam"></i>
+                                    <span>Inventory</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="switchDashboardTab('sales')" class="dashboard-nav-btn cyber-btn w-full text-left p-3 rounded flex items-center space-x-3">
+                                    <i class="bi bi-receipt"></i>
+                                    <span>Sales & Billing</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="switchDashboardTab('customers')" class="dashboard-nav-btn cyber-btn w-full text-left p-3 rounded flex items-center space-x-3">
+                                    <i class="bi bi-people"></i>
+                                    <span>Customers</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onclick="switchDashboardTab('reports')" class="dashboard-nav-btn cyber-btn w-full text-left p-3 rounded flex items-center space-x-3">
+                                    <i class="bi bi-bar-chart"></i>
+                                    <span>Reports</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <!-- Main Content Panels -->
+                <div class="flex-1 p-4">
+                    <!-- Dashboard Overview Panel -->
+                    <div id="dashboardPanel" class="dashboard-panel space-y-6">
+                        <div class="glass neon-border p-6 rounded-lg">
+                            <h2 class="text-2xl font-bold mb-4 neon-text">
+                                <i class="bi bi-grid-1x2"></i> Dashboard Overview
+                            </h2>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="glass neon-border p-4 rounded-lg">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-gray-400">Total Products</h3>
+                                            <p class="text-3xl neon-text" id="totalProductsCount">0</p>
+                                        </div>
+                                        <div class="text-3xl neon-text">
+                                            <i class="bi bi-box"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="glass neon-pink-border p-4 rounded-lg">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-gray-400">Today's Sales</h3>
+                                            <p class="text-3xl neon-pink-text" id="todaySales">₹0.00</p>
+                                        </div>
+                                        <div class="text-3xl neon-pink-text">
+                                            <i class="bi bi-currency-exchange"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="glass neon-border p-4 rounded-lg">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-gray-400">Low Stock Items</h3>
+                                            <p class="text-3xl neon-text" id="lowStockCount">0</p>
+                                        </div>
+                                        <div class="text-3xl neon-text">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="glass neon-border p-6 rounded-lg">
+                                <h3 class="text-xl font-bold mb-4 neon-text">Recent Sales</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left">
+                                        <thead>
+                                            <tr class="border-b border-[var(--neon-blue)]">
+                                                <th class="pb-2">Date</th>
+                                                <th class="pb-2">Bill No</th>
+                                                <th class="pb-2">Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recentSalesTable">
+                                            <tr>
+                                                <td colspan="3" class="py-4 text-center text-gray-400">No recent sales data</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="glass neon-border p-6 rounded-lg">
+                                <h3 class="text-xl font-bold mb-4 neon-text">Popular Products</h3>
+                                <div class="space-y-3" id="popularProductsList">
+                                    <div class="text-center text-gray-400 py-4">No product data available</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Inventory Panel -->
+                    <div id="inventoryPanel" class="dashboard-panel hidden">
+                        <div class="glass neon-border p-6 rounded-lg mb-6">
+                            <h2 class="text-2xl font-bold mb-4 neon-text">
+                                <i class="bi bi-box-seam"></i> Inventory Management
+                            </h2>
+                            
+                            <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+                                <div class="flex items-center space-x-2">
+                                    <div class="relative">
+                                        <input type="text" id="inventorySearch" placeholder="Search products..." class="cyber-input pr-10 rounded">
+                                        <i class="bi bi-search absolute right-3 top-1/2 transform -translate-y-1/2"></i>
+                                    </div>
+                                    <select id="categoryFilter" class="cyber-input rounded">
+                                        <option value="">All Categories</option>
+                                        <option value="tops">Tops</option>
+                                        <option value="bottoms">Bottoms</option>
+                                        <option value="dresses">Dresses</option>
+                                        <option value="accessories">Accessories</option>
+                                    </select>
+                                </div>
+                                
+                                <button class="cyber-btn-pink rounded" onclick="showAddProductForm()">
+                                    <i class="bi bi-plus"></i> Add New Product
+                                </button>
+                            </div>
+                            
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full text-left">
+                                    <thead>
+                                        <tr class="border-b border-[var(--neon-blue)]">
+                                            <th class="pb-3 pl-2">Product</th>
+                                            <th class="pb-3">Code</th>
+                                            <th class="pb-3">Category</th>
+                                            <th class="pb-3">Stock</th>
+                                            <th class="pb-3">Price</th>
+                                            <th class="pb-3">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inventoryTable">
+                                        <!-- Products will be loaded here -->
+                                        <tr>
+                                            <td colspan="6" class="py-4 text-center text-gray-400">
+                                                <div class="loading"></div>
+                                                <p class="mt-4">Loading inventory data...</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Add/Edit Product Form (Hidden by default) -->
+                        <div id="productFormContainer" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div class="glass neon-border p-6 rounded-lg max-w-md w-full">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-xl font-bold neon-text" id="productFormTitle">Add New Product</h3>
+                                    <button onclick="closeProductForm()" class="text-gray-400 hover:text-white">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                                
+                                <form id="productForm" class="space-y-4">
+                                    <input type="hidden" id="productId">
+                                    
+                                    <div>
+                                        <label class="block text-sm mb-1">Product Name</label>
+                                        <input type="text" id="productName" class="cyber-input w-full rounded" placeholder="Enter product name" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm mb-1">Category</label>
+                                        <select id="productCategory" class="cyber-input w-full rounded" required>
+                                            <option value="">Select Category</option>
+                                            <option value="tops">Tops</option>
+                                            <option value="bottoms">Bottoms</option>
+                                            <option value="dresses">Dresses</option>
+                                            <option value="accessories">Accessories</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm mb-1">Cost Price (₹)</label>
+                                            <input type="number" id="costPrice" class="cyber-input w-full rounded" placeholder="Cost price" min="0" step="0.01" required>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-sm mb-1">Selling Price (₹)</label>
+                                            <input type="number" id="sellingPrice" class="cyber-input w-full rounded" placeholder="Selling price" min="0" step="0.01" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm mb-1">Quantity in Stock</label>
+                                            <input type="number" id="stockQuantity" class="cyber-input w-full rounded" placeholder="Stock quantity" min="0" required>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-sm mb-1">Code Word</label>
+                                            <input type="text" id="codeWord" class="cyber-input w-full rounded" placeholder="Unique code word" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm mb-1">Product Image URL (Optional)</label>
+                                        <input type="text" id="imageUrl" class="cyber-input w-full rounded" placeholder="Enter image URL">
+                                    </div>
+                                    
+                                    <div class="flex justify-end space-x-2 pt-4">
+                                        <button type="button" class="cyber-btn rounded" onclick="closeProductForm()">Cancel</button>
+                                        <button type="button" class="cyber-btn-pink rounded" onclick="saveProduct()">Save Product</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sales and Billing Panel -->
+                    <div id="salesPanel" class="dashboard-panel hidden">
+                        <div class="glass neon-border p-6 rounded-lg mb-6">
+                            <h2 class="text-2xl font-bold mb-4 neon-text">
+                                <i class="bi bi-receipt"></i> Sales & Billing
+                            </h2>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                <!-- Product Selection -->
+                                <div class="lg:col-span-2">
+                                    <div class="flex items-center space-x-2 mb-4">
+                                        <input type="text" id="productCodeSearch" class="cyber-input flex-1 rounded" placeholder="Enter product code or name">
+                                        <button class="cyber-btn rounded" onclick="searchProduct()">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="overflow-x-auto mb-4">
+                                        <table class="min-w-full text-left">
+                                            <thead>
+                                                <tr class="border-b border-[var(--neon-blue)]">
+                                                    <th class="pb-3">Product</th>
+                                                    <th class="pb-3">Price</th>
+                                                    <th class="pb-3">Quantity</th>
+                                                    <th class="pb-3">Total</th>
+                                                    <th class="pb-3"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="billItems">
+                                                <!-- Bill items will be added here -->
+                                                <tr>
+                                                    <td colspan="5" class="py-4 text-center text-gray-400">No items added to bill</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- Bill Summary -->
+                                <div class="glass neon-pink-border rounded-lg p-4">
+                                    <h3 class="text-xl font-bold mb-4 neon-pink-text">Bill Summary</h3>
+                                    
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex justify-between">
+                                            <span>Subtotal:</span>
+                                            <span id="subtotal">₹0.00</span>
+                                        </div>
+                                        
+                                        <div class="flex justify-between items-center">
+                                            <span>Discount (%):</span>
+                                            <div class="flex items-center w-24">
+                                                <input type="number" id="discountPercentage" class="cyber-input w-full rounded text-right" value="0" min="0" max="100" onchange="calculateTotal()">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex justify-between">
+                                            <span>Discount Amount:</span>
+                                            <span id="discountAmount">₹0.00</span>
+                                        </div>
+                                        
+                                        <div class="flex justify-between items-center">
+                                            <span>Tax (%):</span>
+                                            <div class="flex items-center w-24">
+                                                <input type="number" id="taxPercentage" class="cyber-input w-full rounded text-right" value="18" min="0" onchange="calculateTotal()">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex justify-between">
+                                            <span>Tax Amount:</span>
+                                            <span id="taxAmount">₹0.00</span>
+                                        </div>
+                                        
+                                        <div class="border-t border-[var(--neon-pink)] my-2 pt-2 flex justify-between font-bold">
+                                            <span>Total Amount:</span>
+                                            <span id="totalAmount" class="neon-pink-text">₹0.00</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Customer Information -->
+                                    <div class="mb-4">
+                                        <label class="block text-sm mb-1">Select Customer (Optional)</label>
+                                        <select id="customerSelect" class="cyber-input w-full rounded mb-2">
+                                            <option value="">Select Customer</option>
+                                        </select>
+                                        <button class="cyber-btn text-xs w-full mb-2 rounded" onclick="showAddCustomerForm()">
+                                            <i class="bi bi-person-plus"></i> New Customer
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Payment Options -->
+                                    <div class="mb-4">
+                                        <label class="block text-sm mb-1">Payment Method</label>
+                                        <select id="paymentMethod" class="cyber-input w-full rounded">
+                                            <option value="cash">Cash</option>
+                                            <option value="card">Card</option>
+                                            <option value="upi">UPI</option>
+                                            <option value="wallet">Digital Wallet</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button class="cyber-btn rounded" onclick="clearBill()">
+                                            <i class="bi bi-trash"></i> Clear Bill
+                                        </button>
+                                        <button class="cyber-btn-pink rounded" onclick="generateBill()">
+                                            <i class="bi bi-receipt-cutoff"></i> Generate Bill
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Bills Section -->
+                        <div class="glass neon-border p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-4 neon-text">Recent Bills</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full text-left">
+                                    <thead>
+                                        <tr class="border-b border-[var(--neon-blue)]">
+                                            <th class="pb-3">Bill No</th>
+                                            <th class="pb-3">Date</th>
+                                            <th class="pb-3">Customer</th>
+                                            <th class="pb-3">Items</th>
+                                            <th class="pb-3">Amount</th>
+                                            <th class="pb-3">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentBillsTable">
+                                        <!-- Recent bills will be loaded here -->
+                                        <tr>
+                                            <td colspan="6" class="py-4 text-center text-gray-400">No recent bills found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Bill Preview Modal -->
+                        <div id="billPreviewModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div class="glass neon-border p-6 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-xl font-bold neon-text">Bill Preview</h3>
+                                    <button onclick="closeBillPreview()" class="text-gray-400 hover:text-white">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                                
+                                <div id="printBill" class="bg-white text-black p-6 rounded-lg">
+                                    <!-- Bill content will be populated here -->
+                                </div>
+                                
+                                <div class="flex justify-end space-x-4 mt-6">
+                                    <button class="cyber-btn rounded" onclick="printBill()">
+                                        <i class="bi bi-printer"></i> Print
+                                    </button>
+                                    <button class="cyber-btn rounded" onclick="emailBill()">
+                                        <i class="bi bi-envelope"></i> Email
+                                    </button>
+                                    <button class="cyber-btn-pink rounded" onclick="finalizeBill()">
+                                        <i class="bi bi-check2-circle"></i> Finalize & Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Customers Panel -->
+                    <div id="customersPanel" class="dashboard-panel hidden">
+                        <div class="glass neon-border p-6 rounded-lg mb-6">
+                            <h2 class="text-2xl font-bold mb-4 neon-text">
+                                <i class="bi bi-people"></i> Customer Management
+                            </h2>
+                            
+                            <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+                                <div class="flex items-center space-x-2">
+                                    <div class="relative">
+                                        <input type="text" id="customerSearch" placeholder="Search customers..." class="cyber-input pr-10 rounded">
+                                        <i class="bi bi-search absolute right-3 top-1/2 transform -translate-y-1/2"></i>
+                                    </div>
+                                </div>
+                                
+                                <button class="cyber-btn-pink rounded" onclick="showAddCustomerForm()">
+                                    <i class="bi bi-person-plus"></i> Add New Customer
+                                </button>
+                            </div>
+                            
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full text-left">
+                                    <thead>
+                                        <tr class="border-b border-[var(--neon-blue)]">
+                                            <th class="pb-3">Name</th>
+                                            <th class="pb-3">Phone</th>
+                                            <th class="pb-3">Email</th>
+                                            <th class="pb-3">Total Purchases</th>
+                                            <th class="pb-3">Last Visit</th>
+                                            <th class="pb-3">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="customersTable">
+                                        <!-- Customers will be loaded here -->
+                                        <tr>
+                                            <td colspan="6" class="py-4 text-center text-gray-400">
+                                                <div class="loading"></div>
+                                                <p class="mt-4">Loading customer data...</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Add/Edit Customer Form (Hidden by default) -->
+                        <div id="customerFormContainer" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div class="glass neon-border p-6 rounded-lg max-w-md w-full">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-xl font-bold neon-text" id="customerFormTitle">Add New Customer</h3>
+                                    <button onclick="closeCustomerForm()" class="text-gray-400 hover:text-white">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                                
+                                <form id="customerForm" class="space-y-4">
+                                    <input type="hidden" id="customerId">
+                                    
+                                    <div>
+                                        <label class="block text-sm mb-1">Customer Name</label>
+                                        <input type="text" id="customerName" class="cyber-input w-full rounded" placeholder="Enter full name" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm mb-1">Phone Number</label>
+                                        <input type="tel" id="customerPhone" class="cyber-input w-full rounded" placeholder="Enter phone number" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm mb-1">Email Address</label>
+                                        <input type="email" id="customerEmail" class="cyber-input w-full rounded" placeholder="Enter email address">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm mb-1">Address (Optional)</label>
+                                        <textarea id="customerAddress" class="cyber-input w-full rounded" placeholder="Enter address" rows="2"></textarea>
+                                    </div>
+                                    
+                                    <div class="flex justify-end space-x-2 pt-4">
+                                        <button type="button" class="cyber-btn rounded" onclick="closeCustomerForm()">Cancel</button>
+                                        <button type="button" class="cyber-btn-pink rounded" onclick="saveCustomer()">Save Customer</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Customer Detail View -->
+                        <div id="customerDetailContainer" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div class="glass neon-border p-6 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-xl font-bold neon-text" id="customerDetailName">Customer Details</h3>
+                                    <button onclick="closeCustomerDetail()" class="text-gray-400 hover:text-white">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                    <div class="glass neon-border p-4 rounded-lg">
+                                        <h4 class="text-lg font-semibold mb-2 neon-text">Contact Information</h4>
+                                        <p id="detailPhone" class="mb-1"><i class="bi bi-telephone mr-2"></i> Loading...</p>
+                                        <p id="detailEmail" class="mb-1"><i class="bi bi-envelope mr-2"></i> Loading...</p>
+                                        <p id="detailAddress" class="mb-1"><i class="bi bi-geo-alt mr-2"></i> Loading...</p>
+                                    </div>
+                                    
+                                    <div class="glass neon-border p-4 rounded-lg">
+                                        <h4 class="text-lg font-semibold mb-2 neon-text">Purchase Summary</h4>
+                                        <p id="detailTotalSpent" class="mb-1"><i class="bi bi-cash mr-2"></i> Total Spent: Loading...</p>
+                                        <p id="detailPurchaseCount" class="mb-1"><i class="bi bi-bag mr-2"></i> Purchase Count: Loading...</p>
+                                        <p id="detailLastVisit" class="mb-1"><i class="bi bi-calendar mr-2"></i> Last Visit: Loading...</p>
+                                    </div>
+                                    
+                                    <div class="glass neon-border p-4 rounded-lg">
+                                        <h4 class="text-lg font-semibold mb-2 neon-text">Loyalty Status</h4>
+                                        <p id="detailLoyaltyLevel" class="mb-1"><i class="bi bi-star mr-2"></i> Tier: Loading...</p>
+                                        <p id="detailLoyaltyPoints" class="mb-1"><i class="bi bi-coin mr-2"></i> Points: Loading...</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-6">
+                                    <div>
+                                        <h4 class="text-lg font-semibold mb-4 neon-text">Purchase History</h4>
+                                        <div class="overflow-x-auto">
+                                            <table class="min-w-full text-left">
+                                                <thead>
+                                                    <tr class="border-b border-[var(--neon-blue)]">
+                                                        <th class="pb-3">Date</th>
+                                                        <th class="pb-3">Bill No</th>
+                                                        <th class="pb-3">Items</th>
+                                                        <th class="pb-3">Amount</th>
+                                                        <th class="pb-3">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="customerPurchasesTable">
+                                                    <!-- Purchase history will be loaded here -->
+                                                    <tr>
+                                                        <td colspan="5" class="py-4 text-center text-gray-400">No purchase history available</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <h4 class="text-lg font-semibold mb-4 neon-text">Recommended Products</h4>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4" id="recommendedProductsContainer">
+                                            <!-- Recommended products will be loaded here -->
+                                            <p class="py-4 text-center text-gray-400 col-span-full">No recommendations available</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-end space-x-2 mt-6">
+                                    <button type="button" class="cyber-btn rounded" onclick="closeCustomerDetail()">Close</button>
+                                    <button type="button" class="cyber-btn-pink rounded" onclick="editCustomer(currentCustomerId)">
+                                        <i class="bi bi-pencil"></i> Edit Customer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reports Panel -->
+                    <div id="reportsPanel" class="dashboard-panel hidden">
+                        <div class="glass neon-border p-6 rounded-lg mb-6">
+                            <h2 class="text-2xl font-bold mb-4 neon-text">
+                                <i class="bi bi-bar-chart"></i> Reports & Analytics
+                            </h2>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div class="glass neon-border p-4 rounded-lg">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-gray-400">This Month</h3>
+                                            <p class="text-3xl neon-text" id="monthSales">₹0.00</p>
+                                        </div>
+                                        <div class="text-3xl neon-text">
+                                            <i class="bi bi-calendar-month"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="glass neon-border p-4 rounded-lg">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-gray-400">Total Sales</h3>
+                                            <p class="text-3xl neon-text" id="totalSales">₹0.00</p>
+                                        </div>
+                                        <div class="text-3xl neon-text">
+                                            <i class="bi bi-graph-up-arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="glass neon-border p-4 rounded-lg">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="text-gray-400">Total Customers</h3>
+                                            <p class="text-3xl neon-text" id="totalCustomers">0</p>
+                                        </div>
+                                        <div class="text-3xl neon-text">
+                                            <i class="bi bi-people"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Report Filters -->
+                            <div class="glass p-4 rounded-lg mb-6">
+                                <h3 class="text-lg font-semibold mb-3 neon-text">Generate Report</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <div>
+                                        <label class="block text-sm mb-1">Report Type</label>
+                                        <select id="reportType" class="cyber-input w-full rounded" onchange="updateReportFilters()">
+                                            <option value="sales">Sales Report</option>
+                                            <option value="inventory">Inventory Report</option>
+                                            <option value="customers">Customer Report</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-sm mb-1">Date Range</label>
+                                        <select id="reportDateRange" class="cyber-input w-full rounded">
+                                            <option value="today">Today</option>
+                                            <option value="yesterday">Yesterday</option>
+                                            <option value="thisWeek">This Week</option>
+                                            <option value="lastWeek">Last Week</option>
+                                            <option value="thisMonth" selected>This Month</option>
+                                            <option value="lastMonth">Last Month</option>
+                                            <option value="custom">Custom Range</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div id="customDateRangeContainer" class="hidden space-y-2">
+                                        <div>
+                                            <label class="block text-sm mb-1">From</label>
+                                            <input type="date" id="reportStartDate" class="cyber-input w-full rounded">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm mb-1">To</label>
+                                            <input type="date" id="reportEndDate" class="cyber-input w-full rounded">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-end">
+                                        <button class="cyber-btn-pink rounded w-full" onclick="generateReport()">
+                                            <i class="bi bi-file-earmark-bar-graph"></i> Generate
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Report Results -->
+                            <div id="reportResults" class="mb-6 hidden">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-semibold neon-text" id="reportResultTitle">Report Results</h3>
+                                    <div class="flex space-x-2">
+                                        <button class="cyber-btn text-xs rounded py-1 px-2" onclick="exportReportCSV()">
+                                            <i class="bi bi-file-earmark-spreadsheet"></i> Export CSV
+                                        </button>
+                                        <button class="cyber-btn text-xs rounded py-1 px-2" onclick="printReport()">
+                                            <i class="bi bi-printer"></i> Print
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="glass neon-border p-4 rounded-lg overflow-x-auto">
+                                    <div id="reportContent">
+                                        <!-- Report content will be dynamically loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Global variables
+        let userId = localStorage.getItem('neonstock_user_id') || generateUUID();
+        let currentShop = {};
+        let products = [];
+        let customers = [];
+        let sales = [];
+        let currentBillItems = [];
+        let currentCustomerId = null;
+        const APP_SLUG = 'neonstock-garment-shop';
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Store user ID in localStorage for persistence
+            localStorage.setItem('neonstock_user_id', userId);
+            
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('neonstock_logged_in');
+            if (isLoggedIn === 'true') {
+                loadUserData();
+                showDashboard();
+            } else {
+                showAuth();
+            }
+            
+            // Set up date range change listener
+            document.getElementById('reportDateRange').addEventListener('change', function() {
+                const customDateRange = document.getElementById('customDateRangeContainer');
+                if (this.value === 'custom') {
+                    customDateRange.classList.remove('hidden');
+                } else {
+                    customDateRange.classList.add('hidden');
+                }
+            });
+        });
+        
+        // Helper Functions
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+        
+        function formatCurrency(amount) {
+            return '₹' + parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        
+        function showLoading(elementId, message = 'Loading...') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `
+                <tr>
+                    <td colspan="10" class="py-4 text-center text-gray-400">
+                        <div class="loading"></div>
+                        <p class="mt-4">${message}</p>
+                    </td>
+                </tr>
+            `;
+        }
+        
+        // Database related functions
+        async function dbOperation(action, table, data = null, id = null) {
+            try {
+                const loadingElement = document.getElementById('app');
+                if (loadingElement) {
+                    loadingElement.classList.add('opacity-50');
+                }
+                
+                const requestBody = {
+                    userId: userId,
+                    appSlug: APP_SLUG,
+                    action: action,
+                    table: table
+                };
+                
+                if (data) requestBody.data = data;
+                if (id) requestBody.id = id;
+                
+                const response = await fetch('https://r0c8kgwocscg8gsokogwwsw4.zetaverse.one/db', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer LF2B1QrAughmDgH4tbKHowk3ptn1'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                
+                const result = await response.json();
+                
+                if (loadingElement) {
+                    loadingElement.classList.remove('opacity-50');
+                }
+                
+                if (result.error) {
+                    console.error('Database operation failed:', result.error);
+                    return { error: result.error };
+                }
+                
+                return result;
+            } catch (error) {
+                console.error('API request failed:', error);
+                return { error: 'Network error. Please try again.' };
+            }
+        }
+        
+        // Authentication functions
+        function switchTab(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            if (tab === 'login') {
+                loginTab.classList.add('tab-active');
+                registerTab.classList.remove('tab-active');
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+            } else {
+                loginTab.classList.remove('tab-active');
+                registerTab.classList.add('tab-active');
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+            }
+        }
+        
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password.');
+                return;
+            }
+            
+            // Check if user exists
+            const usersResult = await dbOperation('read', 'users');
+            if (usersResult.error) {
+                alert('Login failed: ' + usersResult.error);
+                return;
+            }
+            
+            const users = usersResult.data || [];
+            const user = users.find(u => u.data.email === email);
+            
+            if (!user || user.data.password !== password) {
+                alert('Invalid email or password.');
+                return;
+            }
+            
+            // Set logged in state and user info
+            localStorage.setItem('neonstock_logged_in', 'true');
+            localStorage.setItem('neonstock_shop_id', user.id);
+            localStorage.setItem('neonstock_shop_name', user.data.shopName);
+            
+            loadUserData();
+            showDashboard();
+        }
+        
+        async function register() {
+            const shopName = document.getElementById('shopName').value;
+            const email = document.getElementById('registerEmail').value;
+            const mobile = document.getElementById('mobileNumber').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+            
+            if (!shopName || !email || !mobile || !password) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            if (password !== confirmPwd) {
+                alert('Passwords do not match.');
+                return;
+            }
+            
+            // Check if email already exists
+            const usersResult = await dbOperation('read', 'users');
+            if (!usersResult.error) {
+                const users = usersResult.data || [];
+                const existingUser = users.find(u => u.data.email === email);
+                
+                if (existingUser) {
+                    alert('Email already registered. Please use a different email or login.');
+                    return;
+                }
+            }
+            
+            // Create new user
+            const userData = {
+                shopName: shopName,
+                email: email,
+                mobile: mobile,
+                password: password,
+                createdAt: new Date().toISOString()
+            };
+            
+            const result = await dbOperation('create', 'users', userData);
+            
+            if (result.error) {
+                alert('Registration failed: ' + result.error);
+                return;
+            }
+            
+            // Set logged in state and user info
+            localStorage.setItem('neonstock_logged_in', 'true');
+            localStorage.setItem('neonstock_shop_id', result.data[0].id);
+            localStorage.setItem('neonstock_shop_name', shopName);
+            
+            loadUserData();
+            showDashboard();
+            alert('Registration successful! Welcome to NeonStock.');
+        }
+        
+        function logout() {
+            localStorage.removeItem('neonstock_logged_in');
+            showAuth();
+        }
+        
+        async function loadUserData() {
+            const shopId = localStorage.getItem('neonstock_shop_id');
+            const shopName = localStorage.getItem('neonstock_shop_name');
+            
+            currentShop = {
+                id: shopId,
+                name: shopName
+            };
+            
+            document.getElementById('shopNameDisplay').textContent = shopName;
+            document.getElementById('userEmail').textContent = await getUserEmail(shopId);
+            
+            // Load data
+            await Promise.all([
+                loadProducts(),
+                loadCustomers(),
+                loadSales()
+            ]);
+            
+            updateDashboardOverview();
+        }
+        
+        async function getUserEmail(userId) {
+            const usersResult = await dbOperation('read', 'users');
+            if (!usersResult.error) {
+                const users = usersResult.data || [];
+                const user = users.find(u => u.id === userId);
+                return user ? user.data.email : 'User';
+            }
+            return 'User';
+        }
+        
+        // UI functions
+        function showAuth() {
+            document.getElementById('authScreens').classList.remove('hidden');
+            document.getElementById('dashboardScreen').classList.add('hidden');
+        }
+        
+        function showDashboard() {
+            document.getElementById('authScreens').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+            
+            // Default to dashboard tab
+            switchDashboardTab('dashboard');
+        }
+        
+        function switchDashboardTab(tabName) {
+            // Hide all panels
+            document.querySelectorAll('.dashboard-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            
+            // Reset all nav buttons
+            document.querySelectorAll('.dashboard-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-[rgba(0,243,255,0.1)]');
+                btn.classList.remove('neon-text');
+            });
+            
+            // Show selected panel
+            const panel = document.getElementById(tabName + 'Panel');
+            if (panel) {
+                panel.classList.remove('hidden');
+            }
+            
+            // Update button style
+            const navButtons = document.querySelectorAll('.dashboard-nav-btn');
+            navButtons.forEach(btn => {
+                if (btn.textContent.trim().toLowerCase().includes(tabName.toLowerCase())) {
+                    btn.classList.add('bg-[rgba(0,243,255,0.1)]');
+                    btn.classList.add('neon-text');
+                }
+            });
+        }
+        
+        function toggleUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            userMenu.classList.toggle('hidden');
+        }
+        
+        // Dashboard functions
+        async function updateDashboardOverview() {
+            document.getElementById('totalProductsCount').textContent = products.length;
+            
+            // Low stock count
+            const lowStockThreshold = 5;
+            const lowStockItems = products.filter(p => p.data.stockQuantity <= lowStockThreshold);
+            document.getElementById('lowStockCount').textContent = lowStockItems.length;
+            
+            // Today's sales
+            const today = new Date().toISOString().split('T')[0];
+            const todaySales = sales.filter(s => s.data.date && s.data.date.startsWith(today));
+            const todayTotal = todaySales.reduce((sum, sale) => sum + parseFloat(sale.data.totalAmount || 0), 0);
+            document.getElementById('todaySales').textContent = formatCurrency(todayTotal);
+            
+            // Update recent sales table
+            updateRecentSalesTable();
+            
+            // Update popular products
+            updatePopularProducts();
+            
+            // Update report statistics
+            updateReportStatistics();
+        }
+        
+        function updateRecentSalesTable() {
+            const recentSalesTable = document.getElementById('recentSalesTable');
+            
+            if (sales.length === 0) {
+                recentSalesTable.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="py-4 text-center text-gray-400">No recent sales data</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Sort by date descending and take last 5
+            const recentSales = [...sales]
+                .sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
+                .slice(0, 5);
+            
+            recentSalesTable.innerHTML = recentSales.map(sale => `
+                <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                    <td class="py-2">${formatDate(sale.data.date)}</td>
+                    <td class="py-2">${sale.data.billNumber || 'N/A'}</td>
+                    <td class="py-2">${formatCurrency(sale.data.totalAmount)}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function updatePopularProducts() {
+            const popularProductsList = document.getElementById('popularProductsList');
+            
+            if (products.length === 0) {
+                popularProductsList.innerHTML = `
+                    <div class="text-center text-gray-400 py-4">No product data available</div>
+                `;
+                return;
+            }
+            
+            // For now, just show some random products (in a real app this would use sales data)
+            const randomProducts = [...products]
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 5);
+            
+            popularProductsList.innerHTML = randomProducts.map(product => `
+                <div class="flex items-center justify-between p-2 border-b border-[rgba(0,243,255,0.2)]">
+                    <div>
+                        <p class="font-semibold">${product.data.name}</p>
+                        <p class="text-sm text-gray-400">${formatCurrency(product.data.sellingPrice)}</p>
+                    </div>
+                    <div class="text-xs bg-[rgba(0,243,255,0.2)] px-2 py-1 rounded">
+                        ${product.data.category || 'Uncategorized'}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Inventory functions
+        async function loadProducts() {
+            showLoading('inventoryTable', 'Loading inventory data...');
+            
+            const result = await dbOperation('read', 'products');
+            
+            if (result.error) {
+                console.error('Failed to load products:', result.error);
+                document.getElementById('inventoryTable').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-4 text-center text-red-400">Error loading inventory: ${result.error}</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            products = result.data || [];
+            displayProducts();
+        }
+        
+        function displayProducts() {
+            const inventoryTable = document.getElementById('inventoryTable');
+            const search = document.getElementById('inventorySearch')?.value.toLowerCase() || '';
+            const categoryFilter = document.getElementById('categoryFilter')?.value || '';
+            
+            if (products.length === 0) {
+                inventoryTable.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-4 text-center text-gray-400">No products found. Add some products to get started!</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Filter products
+            const filteredProducts = products.filter(product => {
+                const matchesSearch = 
+                    (product.data.name && product.data.name.toLowerCase().includes(search)) ||
+                    (product.data.codeWord && product.data.codeWord.toLowerCase().includes(search));
+                
+                const matchesCategory = !categoryFilter || 
+                    (product.data.category && product.data.category === categoryFilter);
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            if (filteredProducts.length === 0) {
+                inventoryTable.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-4 text-center text-gray-400">No products match your filters</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            inventoryTable.innerHTML = filteredProducts.map(product => `
+                <tr class="border-b border-[rgba(0,243,255,0.2)] hover:bg-[rgba(0,243,255,0.1)]">
+                    <td class="py-3 pl-2">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 mr-3 bg-gray-700 rounded flex items-center justify-center overflow-hidden">
+                                ${product.data.imageUrl ? 
+                                    `<img src="${product.data.imageUrl}" alt="${product.data.name}" class="w-full h-full object-cover">` :
+                                    `<i class="bi bi-box text-lg"></i>`
+                                }
+                            </div>
+                            <div>
+                                <p class="font-medium">${product.data.name || 'Unnamed Product'}</p>
+                                <p class="text-xs text-gray-400">${product.data.category || 'Uncategorized'}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3">${product.data.codeWord || 'N/A'}</td>
+                    <td class="py-3">${product.data.category || 'Uncategorized'}</td>
+                    <td class="py-3">
+                        <span class="${parseInt(product.data.stockQuantity) <= 5 ? 'text-red-400' : ''}">${product.data.stockQuantity || 0}</span>
+                        ${parseInt(product.data.stockQuantity) <= 5 ? '<i class="bi bi-exclamation-triangle-fill text-red-400 ml-1"></i>' : ''}
+                    </td>
+                    <td class="py-3">${formatCurrency(product.data.sellingPrice || 0)}</td>
+                    <td class="py-3">
+                        <div class="flex space-x-2">
+                            <button class="cyber-btn text-xs rounded py-1 px-2" onclick="editProduct('${product.id}')">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="cyber-btn-pink text-xs rounded py-1 px-2" onclick="deleteProduct('${product.id}')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Update counter in dashboard
+            document.getElementById('totalProductsCount').textContent = products.length;
+        }
+        
+        function showAddProductForm() {
+            // Reset form
+            document.getElementById('productFormTitle').textContent = 'Add New Product';
+            document.getElementById('productId').value = '';
+            document.getElementById('productName').value = '';
+            document.getElementById('productCategory').value = '';
+            document.getElementById('costPrice').value = '';
+            document.getElementById('sellingPrice').value = '';
+            document.getElementById('stockQuantity').value = '';
+            document.getElementById('codeWord').value = '';
+            document.getElementById('imageUrl').value = '';
+            
+            // Show form
+            document.getElementById('productFormContainer').classList.remove('hidden');
+        }
+        
+        function closeProductForm() {
+            document.getElementById('productFormContainer').classList.add('hidden');
+        }
+        
+        function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                alert('Product not found');
+                return;
+            }
+            
+            // Populate form
+            document.getElementById('productFormTitle').textContent = 'Edit Product';
+            document.getElementById('productId').value = productId;
+            document.getElementById('productName').value = product.data.name || '';
+            document.getElementById('productCategory').value = product.data.category || '';
+            document.getElementById('costPrice').value = product.data.costPrice || '';
+            document.getElementById('sellingPrice').value = product.data.sellingPrice || '';
+            document.getElementById('stockQuantity').value = product.data.stockQuantity || '';
+            document.getElementById('codeWord').value = product.data.codeWord || '';
+            document.getElementById('imageUrl').value = product.data.imageUrl || '';
+            
+            // Show form
+            document.getElementById('productFormContainer').classList.remove('hidden');
+        }
+        
+        async function saveProduct() {
+            const productId = document.getElementById('productId').value;
+            const productData = {
+                name: document.getElementById('productName').value,
+                category: document.getElementById('productCategory').value,
+                costPrice: document.getElementById('costPrice').value,
+                sellingPrice: document.getElementById('sellingPrice').value,
+                stockQuantity: document.getElementById('stockQuantity').value,
+                codeWord: document.getElementById('codeWord').value,
+                imageUrl: document.getElementById('imageUrl').value,
+                updatedAt: new Date().toISOString()
+            };
+            
+            if (!productData.name || !productData.sellingPrice || !productData.stockQuantity) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            let result;
+            if (productId) {
+                // Update existing product
+                result = await dbOperation('update', 'products', productData, productId);
+            } else {
+                // Create new product
+                productData.createdAt = new Date().toISOString();
+                result = await dbOperation('create', 'products', productData);
+            }
+            
+            if (result.error) {
+                alert(`Failed to save product: ${result.error}`);
+                return;
+            }
+            
+            await loadProducts();
+            closeProductForm();
+        }
+        
+        async function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) {
+                return;
+            }
+            
+            const result = await dbOperation('delete', 'products', null, productId);
+            
+            if (result.error) {
+                alert(`Failed to delete product: ${result.error}`);
+                return;
+            }
+            
+            await loadProducts();
+        }
+        
+        // Sales and Billing functions
+        async function loadSales() {
+            const result = await dbOperation('read', 'sales');
+            
+            if (result.error) {
+                console.error('Failed to load sales:', result.error);
+                return;
+            }
+            
+            sales = result.data || [];
+            displayRecentBills();
+        }
+        
+        function displayRecentBills() {
+            const recentBillsTable = document.getElementById('recentBillsTable');
+            
+            if (sales.length === 0) {
+                recentBillsTable.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-4 text-center text-gray-400">No recent bills found</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Sort by date descending
+            const recentSales = [...sales]
+                .sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
+                .slice(0, 10);
+            
+            recentBillsTable.innerHTML = recentSales.map(sale => `
+                <tr class="border-b border-[rgba(0,243,255,0.2)] hover:bg-[rgba(0,243,255,0.1)]">
+                    <td class="py-3">${sale.data.billNumber || 'N/A'}</td>
+                    <td class="py-3">${formatDate(sale.data.date)}</td>
+                    <td class="py-3">${sale.data.customerName || 'Walk-in Customer'}</td>
+                    <td class="py-3">${sale.data.items?.length || 0} items</td>
+                    <td class="py-3">${formatCurrency(sale.data.totalAmount)}</td>
+                    <td class="py-3">
+                        <div class="flex space-x-2">
+                            <button class="cyber-btn text-xs rounded py-1 px-2" onclick="viewBill('${sale.id}')">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="cyber-btn-pink text-xs rounded py-1 px-2" onclick="deleteBill('${sale.id}')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            
+            updateRecentSalesTable();
+        }
+        
+        function searchProduct() {
+            const searchQuery = document.getElementById('productCodeSearch').value.trim().toLowerCase();
+            
+            if (!searchQuery) {
+                alert('Please enter a product code or name');
+                return;
+            }
+            
+            const product = products.find(p => 
+                (p.data.codeWord && p.data.codeWord.toLowerCase() === searchQuery) || 
+                (p.data.name && p.data.name.toLowerCase() === searchQuery)
+            );
+            
+            if (!product) {
+                alert('Product not found');
+                return;
+            }
+            
+            addProductToBill(product);
+            document.getElementById('productCodeSearch').value = '';
+        }
+        
+        function addProductToBill(product) {
+            // Check if already in bill
+            const existingItemIndex = currentBillItems.findIndex(item => item.id === product.id);
+            
+            if (existingItemIndex >= 0) {
+                // Update quantity
+                currentBillItems[existingItemIndex].quantity++;
+                currentBillItems[existingItemIndex].total = 
+                    currentBillItems[existingItemIndex].quantity * currentBillItems[existingItemIndex].price;
+            } else {
+                // Add new item
+                currentBillItems.push({
+                    id: product.id,
+                    name: product.data.name,
+                    price: parseFloat(product.data.sellingPrice),
+                    quantity: 1,
+                    total: parseFloat(product.data.sellingPrice)
+                });
+            }
+            
+            displayBillItems();
+            calculateTotal();
+        }
+        
+        function updateItemQuantity(index, newQuantity) {
+            if (newQuantity <= 0) {
+                currentBillItems.splice(index, 1);
+            } else {
+                currentBillItems[index].quantity = newQuantity;
+                currentBillItems[index].total = currentBillItems[index].quantity * currentBillItems[index].price;
+            }
+            
+            displayBillItems();
+            calculateTotal();
+        }
+        
+        function removeItemFromBill(index) {
+            currentBillItems.splice(index, 1);
+            displayBillItems();
+            calculateTotal();
+        }
+        
+        function displayBillItems() {
+            const billItemsTable = document.getElementById('billItems');
+            
+            if (currentBillItems.length === 0) {
+                billItemsTable.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="py-4 text-center text-gray-400">No items added to bill</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            billItemsTable.innerHTML = currentBillItems.map((item, index) => `
+                <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                    <td class="py-2">${item.name}</td>
+                    <td class="py-2">${formatCurrency(item.price)}</td>
+                    <td class="py-2">
+                        <div class="flex items-center space-x-2">
+                            <button class="cyber-btn text-xs rounded px-2 py-1" onclick="updateItemQuantity(${index}, ${item.quantity - 1})">-</button>
+                            <span class="w-8 text-center">${item.quantity}</span>
+                            <button class="cyber-btn text-xs rounded px-2 py-1" onclick="updateItemQuantity(${index}, ${item.quantity + 1})">+</button>
+                        </div>
+                    </td>
+                    <td class="py-2">${formatCurrency(item.total)}</td>
+                    <td class="py-2">
+                        <button class="cyber-btn-pink text-xs rounded px-2 py-1" onclick="removeItemFromBill(${index})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function calculateTotal() {
+            const subtotal = currentBillItems.reduce((sum, item) => sum + item.total, 0);
+            document.getElementById('subtotal').textContent = formatCurrency(subtotal);
+            
+            const discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
+            const discountAmount = (subtotal * discountPercentage / 100);
+            document.getElementById('discountAmount').textContent = formatCurrency(discountAmount);
+            
+            const taxPercentage = parseFloat(document.getElementById('taxPercentage').value) || 0;
+            const taxAmount = ((subtotal - discountAmount) * taxPercentage / 100);
+            document.getElementById('taxAmount').textContent = formatCurrency(taxAmount);
+            
+            const totalAmount = subtotal - discountAmount + taxAmount;
+            document.getElementById('totalAmount').textContent = formatCurrency(totalAmount);
+        }
+        
+        function clearBill() {
+            if (currentBillItems.length > 0 && !confirm('Are you sure you want to clear the current bill?')) {
+                return;
+            }
+            
+            currentBillItems = [];
+            displayBillItems();
+            calculateTotal();
+            document.getElementById('customerSelect').value = '';
+            document.getElementById('discountPercentage').value = '0';
+            document.getElementById('taxPercentage').value = '18';
+        }
+        
+        function generateBill() {
+            if (currentBillItems.length === 0) {
+                alert('Please add at least one item to the bill');
+                return;
+            }
+            
+            // Generate bill content for preview
+            const subtotal = currentBillItems.reduce((sum, item) => sum + item.total, 0);
+            const discountPercentage = parseFloat(document.getElementById('discountPercentage').value) || 0;
+            const discountAmount = (subtotal * discountPercentage / 100);
+            const taxPercentage = parseFloat(document.getElementById('taxPercentage').value) || 0;
+            const taxAmount = ((subtotal - discountAmount) * taxPercentage / 100);
+            const totalAmount = subtotal - discountAmount + taxAmount;
+            
+            const customerId = document.getElementById('customerSelect').value;
+            const customerName = customerId ? 
+                customers.find(c => c.id === customerId)?.data.name || 'Customer' : 'Walk-in Customer';
+            
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const billNumber = generateBillNumber();
+            
+            // Generate bill HTML
+            const billDate = new Date().toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const billHtml = `
+                <div class="text-center mb-4">
+                    <h2 class="text-2xl font-bold">${currentShop.name || 'NeonStock Store'}</h2>
+                    <p class="text-gray-600">Garment Shop</p>
+                    <p class="text-gray-600">Bill #: ${billNumber} | Date: ${billDate}</p>
+                </div>
+                
+                <div class="flex justify-between mb-4">
+                    <div>
+                        <p class="font-bold">Bill To:</p>
+                        <p>${customerName}</p>
+                        ${customerId ? `<p>${customers.find(c => c.id === customerId)?.data.mobile || ''}</p>` : ''}
+                    </div>
+                    <div>
+                        <p class="font-bold">Payment Method:</p>
+                        <p>${paymentMethod.toUpperCase()}</p>
+                    </div>
+                </div>
+                
+                <table class="w-full mb-4">
+                    <thead>
+                        <tr class="border-b-2 border-gray-300">
+                            <th class="text-left py-2">Item</th>
+                            <th class="text-right py-2">Price</th>
+                            <th class="text-right py-2">Qty</th>
+                            <th class="text-right py-2">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${currentBillItems.map(item => `
+                            <tr class="border-b border-gray-200">
+                                <td class="py-2">${item.name}</td>
+                                <td class="text-right py-2">${formatCurrency(item.price)}</td>
+                                <td class="text-right py-2">${item.quantity}</td>
+                                <td class="text-right py-2">${formatCurrency(item.total)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                
+                <div class="flex justify-end">
+                    <div class="w-64">
+                        <div class="flex justify-between py-1">
+                            <span>Subtotal:</span>
+                            <span>${formatCurrency(subtotal)}</span>
+                        </div>
+                        ${discountPercentage > 0 ? `
+                            <div class="flex justify-between py-1">
+                                <span>Discount (${discountPercentage}%):</span>
+                                <span>-${formatCurrency(discountAmount)}</span>
+                            </div>
+                        ` : ''}
+                        ${taxPercentage > 0 ? `
+                            <div class="flex justify-between py-1">
+                                <span>Tax (${taxPercentage}%):</span>
+                                <span>${formatCurrency(taxAmount)}</span>
+                            </div>
+                        ` : ''}
+                        <div class="flex justify-between py-2 font-bold border-t border-gray-300 mt-2">
+                            <span>Total:</span>
+                            <span>${formatCurrency(totalAmount)}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center text-gray-600">
+                    <p>Thank you for your business!</p>
+                    <p class="text-sm">Generated by NeonStock - Cyberpunk Garment Shop Management</p>
+                </div>
+            `;
+            
+            // Show bill preview
+            document.getElementById('printBill').innerHTML = billHtml;
+            document.getElementById('billPreviewModal').classList.remove('hidden');
+            
+            // Store bill data for later use
+            window.currentBillData = {
+                billNumber,
+                date: new Date().toISOString(),
+                customerId,
+                customerName,
+                items: currentBillItems.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    total: item.total
+                })),
+                subtotal,
+                discountPercentage,
+                discountAmount,
+                taxPercentage,
+                taxAmount,
+                totalAmount,
+                paymentMethod
+            };
+        }
+        
+        function generateBillNumber() {
+            const today = new Date();
+            const year = today.getFullYear().toString().substr(-2);
+            const month = (today.getMonth() + 1).toString().padStart(2, '0');
+            const day = today.getDate().toString().padStart(2, '0');
+            
+            // Count existing bills for today to generate sequential number
+            const datePrefix = `${year}${month}${day}`;
+            const todayBills = sales.filter(sale => 
+                sale.data.billNumber && sale.data.billNumber.startsWith(`BILL-${datePrefix}`)
+            );
+            
+            const sequence = (todayBills.length + 1).toString().padStart(3, '0');
+            return `BILL-${datePrefix}-${sequence}`;
+        }
+        
+        function closeBillPreview() {
+            document.getElementById('billPreviewModal').classList.add('hidden');
+        }
+        
+        function printBill() {
+            window.print();
+        }
+        
+        function emailBill() {
+            const customerEmail = currentBillData.customerId ? 
+                customers.find(c => c.id === currentBillData.customerId)?.data.email : null;
+                
+            if (!customerEmail) {
+                alert('No email address available for this customer. Please add an email in the customer profile.');
+                return;
+            }
+            
+            alert(`Email would be sent to ${customerEmail} in a fully implemented system.`);
+            // In a real implementation, this would connect to an email service
+        }
+        
+        async function finalizeBill() {
+            // Save bill to database
+            const result = await dbOperation('create', 'sales', currentBillData);
+            
+            if (result.error) {
+                alert(`Failed to save bill: ${result.error}`);
+                return;
+            }
+            
+            // Update product stock quantities
+            for (const item of currentBillData.items) {
+                const product = products.find(p => p.id === item.id);
+                if (product) {
+                    const newStock = Math.max(0, parseInt(product.data.stockQuantity) - item.quantity);
+                    await dbOperation('update', 'products', { 
+                        ...product.data, 
+                        stockQuantity: newStock 
+                    }, product.id);
+                }
+            }
+            
+            // Reload data
+            await Promise.all([
+                loadProducts(),
+                loadSales()
+            ]);
+            
+            // Clear current bill
+            clearBill();
+            
+            // Close modal
+            closeBillPreview();
+            
+            alert('Bill saved successfully!');
+        }
+        
+        async function viewBill(saleId) {
+            const sale = sales.find(s => s.id === saleId);
+            if (!sale) {
+                alert('Bill not found');
+                return;
+            }
+            
+            // Generate bill HTML for viewing
+            const billDate = formatDate(sale.data.date);
+            
+            const billHtml = `
+                <div class="text-center mb-4">
+                    <h2 class="text-2xl font-bold">${currentShop.name || 'NeonStock Store'}</h2>
+                    <p class="text-gray-600">Garment Shop</p>
+                    <p class="text-gray-600">Bill #: ${sale.data.billNumber} | Date: ${billDate}</p>
+                </div>
+                
+                <div class="flex justify-between mb-4">
+                    <div>
+                        <p class="font-bold">Bill To:</p>
+                        <p>${sale.data.customerName || 'Walk-in Customer'}</p>
+                    </div>
+                    <div>
+                        <p class="font-bold">Payment Method:</p>
+                        <p>${(sale.data.paymentMethod || 'CASH').toUpperCase()}</p>
+                    </div>
+                </div>
+                
+                <table class="w-full mb-4">
+                    <thead>
+                        <tr class="border-b-2 border-gray-300">
+                            <th class="text-left py-2">Item</th>
+                            <th class="text-right py-2">Price</th>
+                            <th class="text-right py-2">Qty</th>
+                            <th class="text-right py-2">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${sale.data.items.map(item => `
+                            <tr class="border-b border-gray-200">
+                                <td class="py-2">${item.name}</td>
+                                <td class="text-right py-2">${formatCurrency(item.price)}</td>
+                                <td class="text-right py-2">${item.quantity}</td>
+                                <td class="text-right py-2">${formatCurrency(item.total)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                
+                <div class="flex justify-end">
+                    <div class="w-64">
+                        <div class="flex justify-between py-1">
+                            <span>Subtotal:</span>
+                            <span>${formatCurrency(sale.data.subtotal)}</span>
+                        </div>
+                        ${sale.data.discountAmount > 0 ? `
+                            <div class="flex justify-between py-1">
+                                <span>Discount (${sale.data.discountPercentage}%):</span>
+                                <span>-${formatCurrency(sale.data.discountAmount)}</span>
+                            </div>
+                        ` : ''}
+                        ${sale.data.taxAmount > 0 ? `
+                            <div class="flex justify-between py-1">
+                                <span>Tax (${sale.data.taxPercentage}%):</span>
+                                <span>${formatCurrency(sale.data.taxAmount)}</span>
+                            </div>
+                        ` : ''}
+                        <div class="flex justify-between py-2 font-bold border-t border-gray-300 mt-2">
+                            <span>Total:</span>
+                            <span>${formatCurrency(sale.data.totalAmount)}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center text-gray-600">
+                    <p>Thank you for your business!</p>
+                    <p class="text-sm">Generated by NeonStock - Cyberpunk Garment Shop Management</p>
+                </div>
+            `;
+            
+            // Show bill preview
+            document.getElementById('printBill').innerHTML = billHtml;
+            document.getElementById('billPreviewModal').classList.remove('hidden');
+            
+            // Store for potential reprints
+            window.currentBillData = sale.data;
+        }
+        
+        async function deleteBill(saleId) {
+            if (!confirm('Are you sure you want to delete this bill?')) {
+                return;
+            }
+            
+            const result = await dbOperation('delete', 'sales', null, saleId);
+            
+            if (result.error) {
+                alert(`Failed to delete bill: ${result.error}`);
+                return;
+            }
+            
+            await loadSales();
+            updateDashboardOverview();
+        }
+        
+        // Customer functions
+        async function loadCustomers() {
+            showLoading('customersTable', 'Loading customer data...');
+            
+            // Populate customer select dropdown for billing
+            const customerSelect = document.getElementById('customerSelect');
+            customerSelect.innerHTML = '<option value="">Select Customer</option>';
+            
+            const result = await dbOperation('read', 'customers');
+            
+            if (result.error) {
+                console.error('Failed to load customers:', result.error);
+                document.getElementById('customersTable').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-4 text-center text-red-400">Error loading customers: ${result.error}</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            customers = result.data || [];
+            
+            // Populate select dropdown
+            customers.forEach(customer => {
+                const option = document.createElement('option');
+                option.value = customer.id;
+                option.textContent = customer.data.name;
+                customerSelect.appendChild(option);
+            });
+            
+            displayCustomers();
+        }
+        
+        function displayCustomers() {
+            const customersTable = document.getElementById('customersTable');
+            const search = document.getElementById('customerSearch')?.value.toLowerCase() || '';
+            
+            if (customers.length === 0) {
+                customersTable.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-4 text-center text-gray-400">No customers found. Add some customers to get started!</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Filter customers
+            const filteredCustomers = customers.filter(customer => {
+                const name = customer.data.name?.toLowerCase() || '';
+                const phone = customer.data.mobile?.toLowerCase() || '';
+                const email = customer.data.email?.toLowerCase() || '';
+                
+                return !search || name.includes(search) || phone.includes(search) || email.includes(search);
+            });
+            
+            if (filteredCustomers.length === 0) {
+                customersTable.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-4 text-center text-gray-400">No customers match your search</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Calculate customer metrics
+            const customerMetrics = filteredCustomers.map(customer => {
+                const customerSales = sales.filter(sale => sale.data.customerId === customer.id);
+                const totalPurchases = customerSales.length;
+                const lastVisit = customerSales.length > 0 ? 
+                    Math.max(...customerSales.map(sale => new Date(sale.data.date).getTime())) : null;
+                
+                return {
+                    ...customer,
+                    totalPurchases,
+                    lastVisit
+                };
+            });
+            
+            customersTable.innerHTML = customerMetrics.map(customer => `
+                <tr class="border-b border-[rgba(0,243,255,0.2)] hover:bg-[rgba(0,243,255,0.1)]">
+                    <td class="py-3">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 mr-3 bg-gray-700 rounded-full flex items-center justify-center">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <span>${customer.data.name || 'Unnamed'}</span>
+                        </div>
+                    </td>
+                    <td class="py-3">${customer.data.mobile || 'N/A'}</td>
+                    <td class="py-3">${customer.data.email || 'N/A'}</td>
+                    <td class="py-3">${customer.totalPurchases}</td>
+                    <td class="py-3">${customer.lastVisit ? formatDate(new Date(customer.lastVisit)) : 'Never'}</td>
+                    <td class="py-3">
+                        <div class="flex space-x-2">
+                            <button class="cyber-btn text-xs rounded py-1 px-2" onclick="viewCustomerDetails('${customer.id}')">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="cyber-btn text-xs rounded py-1 px-2" onclick="editCustomer('${customer.id}')">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="cyber-btn-pink text-xs rounded py-1 px-2" onclick="deleteCustomer('${customer.id}')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Update counter in reports
+            document.getElementById('totalCustomers').textContent = customers.length;
+        }
+        
+        function showAddCustomerForm() {
+            // Reset form
+            document.getElementById('customerFormTitle').textContent = 'Add New Customer';
+            document.getElementById('customerId').value = '';
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('customerEmail').value = '';
+            document.getElementById('customerAddress').value = '';
+            
+            // Show form
+            document.getElementById('customerFormContainer').classList.remove('hidden');
+        }
+        
+        function closeCustomerForm() {
+            document.getElementById('customerFormContainer').classList.add('hidden');
+        }
+        
+        function editCustomer(customerId) {
+            const customer = customers.find(c => c.id === customerId);
+            if (!customer) {
+                alert('Customer not found');
+                return;
+            }
+            
+            // Close detail view if open
+            closeCustomerDetail();
+            
+            // Populate form
+            document.getElementById('customerFormTitle').textContent = 'Edit Customer';
+            document.getElementById('customerId').value = customerId;
+            document.getElementById('customerName').value = customer.data.name || '';
+            document.getElementById('customerPhone').value = customer.data.mobile || '';
+            document.getElementById('customerEmail').value = customer.data.email || '';
+            document.getElementById('customerAddress').value = customer.data.address || '';
+            
+            // Show form
+            document.getElementById('customerFormContainer').classList.remove('hidden');
+        }
+        
+        async function saveCustomer() {
+            const customerId = document.getElementById('customerId').value;
+            const customerData = {
+                name: document.getElementById('customerName').value,
+                mobile: document.getElementById('customerPhone').value,
+                email: document.getElementById('customerEmail').value,
+                address: document.getElementById('customerAddress').value,
+                updatedAt: new Date().toISOString()
+            };
+            
+            if (!customerData.name || !customerData.mobile) {
+                alert('Please fill in name and phone number');
+                return;
+            }
+            
+            let result;
+            if (customerId) {
+                // Update existing customer
+                result = await dbOperation('update', 'customers', customerData, customerId);
+            } else {
+                // Create new customer
+                customerData.createdAt = new Date().toISOString();
+                customerData.loyaltyPoints = 0;
+                customerData.loyaltyTier = 'Bronze';
+                result = await dbOperation('create', 'customers', customerData);
+            }
+            
+            if (result.error) {
+                alert(`Failed to save customer: ${result.error}`);
+                return;
+            }
+            
+            await loadCustomers();
+            closeCustomerForm();
+            
+            // If we're editing a customer that was being viewed, refresh the detail view
+            if (customerId && customerId === currentCustomerId) {
+                viewCustomerDetails(customerId);
+            }
+        }
+        
+        async function deleteCustomer(customerId) {
+            if (!confirm('Are you sure you want to delete this customer?')) {
+                return;
+            }
+            
+            const result = await dbOperation('delete', 'customers', null, customerId);
+            
+            if (result.error) {
+                alert(`Failed to delete customer: ${result.error}`);
+                return;
+            }
+            
+            await loadCustomers();
+            
+            // Close detail view if it was open for this customer
+            if (customerId === currentCustomerId) {
+                closeCustomerDetail();
+            }
+        }
+        
+        function viewCustomerDetails(customerId) {
+            const customer = customers.find(c => c.id === customerId);
+            if (!customer) {
+                alert('Customer not found');
+                return;
+            }
+            
+            currentCustomerId = customerId;
+            
+            // Calculate customer metrics
+            const customerSales = sales.filter(sale => sale.data.customerId === customerId);
+            const totalSpent = customerSales.reduce((sum, sale) => sum + parseFloat(sale.data.totalAmount || 0), 0);
+            const purchaseCount = customerSales.length;
+            const lastVisitDate = customerSales.length > 0 ? 
+                new Date(Math.max(...customerSales.map(sale => new Date(sale.data.date).getTime()))) : null;
+            
+            // Update customer details
+            document.getElementById('customerDetailName').textContent = customer.data.name || 'Unnamed Customer';
+            document.getElementById('detailPhone').innerHTML = `<i class="bi bi-telephone mr-2"></i> ${customer.data.mobile || 'N/A'}`;
+            document.getElementById('detailEmail').innerHTML = `<i class="bi bi-envelope mr-2"></i> ${customer.data.email || 'N/A'}`;
+            document.getElementById('detailAddress').innerHTML = `<i class="bi bi-geo-alt mr-2"></i> ${customer.data.address || 'No address provided'}`;
+            
+            document.getElementById('detailTotalSpent').innerHTML = `<i class="bi bi-cash mr-2"></i> Total Spent: ${formatCurrency(totalSpent)}`;
+            document.getElementById('detailPurchaseCount').innerHTML = `<i class="bi bi-bag mr-2"></i> Purchase Count: ${purchaseCount}`;
+            document.getElementById('detailLastVisit').innerHTML = `<i class="bi bi-calendar mr-2"></i> Last Visit: ${lastVisitDate ? formatDate(lastVisitDate) : 'Never'}`;
+            
+            // Loyalty info (simplified tier system)
+            let loyaltyTier = 'Bronze';
+            if (totalSpent > 10000) loyaltyTier = 'Platinum';
+            else if (totalSpent > 5000) loyaltyTier = 'Gold';
+            else if (totalSpent > 2000) loyaltyTier = 'Silver';
+            
+            const loyaltyPoints = Math.floor(totalSpent / 100); // 1 point per ₹100 spent
+            
+            document.getElementById('detailLoyaltyLevel').innerHTML = `<i class="bi bi-star mr-2"></i> Tier: ${loyaltyTier}`;
+            document.getElementById('detailLoyaltyPoints').innerHTML = `<i class="bi bi-coin mr-2"></i> Points: ${loyaltyPoints}`;
+            
+            // Purchase history
+            const customerPurchasesTable = document.getElementById('customerPurchasesTable');
+            
+            if (customerSales.length === 0) {
+                customerPurchasesTable.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="py-4 text-center text-gray-400">No purchase history available</td>
+                    </tr>
+                `;
+            } else {
+                // Sort by date descending
+                const sortedSales = [...customerSales].sort((a, b) => 
+                    new Date(b.data.date) - new Date(a.data.date)
+                );
+                
+                customerPurchasesTable.innerHTML = sortedSales.map(sale => `
+                    <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                        <td class="py-2">${formatDate(sale.data.date)}</td>
+                        <td class="py-2">${sale.data.billNumber || 'N/A'}</td>
+                        <td class="py-2">${sale.data.items?.length || 0} items</td>
+                        <td class="py-2">${formatCurrency(sale.data.totalAmount)}</td>
+                        <td class="py-2">
+                            <button class="cyber-btn text-xs rounded py-1 px-2" onclick="viewBill('${sale.id}')">
+                                <i class="bi bi-receipt"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            
+            // Recommended products based on past purchases
+            // In a real app, this would use more sophisticated recommendation algorithms
+            const recommendedProductsContainer = document.getElementById('recommendedProductsContainer');
+            
+            // Get all products this customer has purchased
+            const purchasedProductIds = new Set();
+            customerSales.forEach(sale => {
+                sale.data.items?.forEach(item => {
+                    purchasedProductIds.add(item.id);
+                });
+            });
+            
+            // Filter products by category of purchased products
+            const purchasedProducts = products.filter(p => purchasedProductIds.has(p.id));
+            const purchasedCategories = new Set(purchasedProducts.map(p => p.data.category).filter(Boolean));
+            
+            // Find products in the same categories that haven't been purchased
+            const recommendations = products.filter(p => 
+                p.data.category && 
+                purchasedCategories.has(p.data.category) && 
+                !purchasedProductIds.has(p.id)
+            ).slice(0, 4);
+            
+            if (recommendations.length === 0) {
+                // If no specific recommendations, show some popular products
+                recommendedProductsContainer.innerHTML = `
+                    <p class="py-4 text-center text-gray-400 col-span-full">No specific recommendations available</p>
+                `;
+            } else {
+                recommendedProductsContainer.innerHTML = recommendations.map(product => `
+                    <div class="glass p-4 rounded-lg">
+                        <div class="h-24 bg-gray-700 rounded-lg flex items-center justify-center mb-2 overflow-hidden">
+                            ${product.data.imageUrl ? 
+                                `<img src="${product.data.imageUrl}" alt="${product.data.name}" class="w-full h-full object-cover">` :
+                                `<i class="bi bi-box text-3xl"></i>`
+                            }
+                        </div>
+                        <h4 class="font-semibold truncate" title="${product.data.name}">${product.data.name}</h4>
+                        <p class="text-gray-400 text-sm">${product.data.category}</p>
+                        <div class="flex justify-between items-center mt-2">
+                            <span>${formatCurrency(product.data.sellingPrice)}</span>
+                            <button class="cyber-btn-pink text-xs rounded py-1 px-2" onclick="addToCustomerBill('${product.id}', '${customerId}')">
+                                <i class="bi bi-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Show detail view
+            document.getElementById('customerDetailContainer').classList.remove('hidden');
+        }
+        
+        function closeCustomerDetail() {
+            document.getElementById('customerDetailContainer').classList.add('hidden');
+            currentCustomerId = null;
+        }
+        
+        function addToCustomerBill(productId, customerId) {
+            // Switch to billing tab
+            switchDashboardTab('sales');
+            
+            // Set customer
+            document.getElementById('customerSelect').value = customerId;
+            
+            // Add product to bill
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                addProductToBill(product);
+            }
+            
+            // Close customer detail view
+            closeCustomerDetail();
+        }
+        
+        // Report functions
+        function updateReportFilters() {
+            const reportType = document.getElementById('reportType').value;
+            
+            // Show/hide specific filters based on report type
+            // This would be expanded in a full implementation
+        }
+        
+        function updateReportStatistics() {
+            // Calculate total sales
+            const totalSalesAmount = sales.reduce((sum, sale) => sum + parseFloat(sale.data.totalAmount || 0), 0);
+            document.getElementById('totalSales').textContent = formatCurrency(totalSalesAmount);
+            
+            // Calculate this month's sales
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            
+            const thisMonthSales = sales.filter(sale => {
+                const saleDate = new Date(sale.data.date);
+                return saleDate.getMonth() === currentMonth && saleDate.getFullYear() === currentYear;
+            });
+            
+            const monthlyTotal = thisMonthSales.reduce((sum, sale) => sum + parseFloat(sale.data.totalAmount || 0), 0);
+            document.getElementById('monthSales').textContent = formatCurrency(monthlyTotal);
+            
+            // Update customer count
+            document.getElementById('totalCustomers').textContent = customers.length;
+        }
+        
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            const dateRange = document.getElementById('reportDateRange').value;
+            
+            // Calculate date range
+            let startDate, endDate;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            switch (dateRange) {
+                case 'today':
+                    startDate = today;
+                    endDate = new Date(today);
+                    endDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'yesterday':
+                    startDate = new Date(today);
+                    startDate.setDate(today.getDate() - 1);
+                    endDate = new Date(startDate);
+                    endDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'thisWeek':
+                    startDate = new Date(today);
+                    startDate.setDate(today.getDate() - today.getDay());
+                    endDate = new Date(today);
+                    endDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'lastWeek':
+                    startDate = new Date(today);
+                    startDate.setDate(today.getDate() - today.getDay() - 7);
+                    endDate = new Date(startDate);
+                    endDate.setDate(startDate.getDate() + 6);
+                    endDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'thisMonth':
+                    startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+                    endDate = new Date(today);
+                    endDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'lastMonth':
+                    startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    endDate = new Date(today.getFullYear(), today.getMonth(), 0);
+                    endDate.setHours(23, 59, 59, 999);
+                    break;
+                case 'custom':
+                    const startDateInput = document.getElementById('reportStartDate').value;
+                    const endDateInput = document.getElementById('reportEndDate').value;
+                    
+                    if (!startDateInput || !endDateInput) {
+                        alert('Please select both start and end dates');
+                        return;
+                    }
+                    
+                    startDate = new Date(startDateInput);
+                    endDate = new Date(endDateInput);
+                    endDate.setHours(23, 59, 59, 999);
+                    break;
+            }
+            
+            // Filter data by date range
+            let reportData;
+            let reportTitle;
+            
+            const filteredSales = sales.filter(sale => {
+                const saleDate = new Date(sale.data.date);
+                return saleDate >= startDate && saleDate <= endDate;
+            });
+            
+            // Generate report based on type
+            switch (reportType) {
+                case 'sales':
+                    reportTitle = 'Sales Report';
+                    reportData = generateSalesReport(filteredSales, startDate, endDate);
+                    break;
+                case 'inventory':
+                    reportTitle = 'Inventory Report';
+                    reportData = generateInventoryReport(products, filteredSales, startDate, endDate);
+                    break;
+                case 'customers':
+                    reportTitle = 'Customer Report';
+                    reportData = generateCustomerReport(customers, filteredSales, startDate, endDate);
+                    break;
+            }
+            
+            // Update the report results
+            document.getElementById('reportResultTitle').textContent = reportTitle;
+            document.getElementById('reportContent').innerHTML = reportData;
+            document.getElementById('reportResults').classList.remove('hidden');
+        }
+        
+        function generateSalesReport(filteredSales, startDate, endDate) {
+            const totalAmount = filteredSales.reduce((sum, sale) => sum + parseFloat(sale.data.totalAmount || 0), 0);
+            const totalItems = filteredSales.reduce((sum, sale) => sum + (sale.data.items?.length || 0), 0);
+            const averageBillValue = filteredSales.length > 0 ? totalAmount / filteredSales.length : 0;
+            
+            // Group sales by date
+            const salesByDate = {};
+            filteredSales.forEach(sale => {
+                const saleDate = sale.data.date.split('T')[0];
+                if (!salesByDate[saleDate]) {
+                    salesByDate[saleDate] = {
+                        date: saleDate,
+                        totalAmount: 0,
+                        billCount: 0
+                    };
+                }
+                
+                salesByDate[saleDate].totalAmount += parseFloat(sale.data.totalAmount || 0);
+                salesByDate[saleDate].billCount += 1;
+            });
+            
+            // Convert to array and sort
+            const dailySales = Object.values(salesByDate).sort((a, b) => 
+                new Date(a.date) - new Date(b.date)
+            );
+            
+            // Group sales by payment method
+            const salesByPayment = {};
+            filteredSales.forEach(sale => {
+                const method = sale.data.paymentMethod || 'cash';
+                if (!salesByPayment[method]) {
+                    salesByPayment[method] = {
+                        method,
+                        totalAmount: 0,
+                        count: 0
+                    };
+                }
+                
+                salesByPayment[method].totalAmount += parseFloat(sale.data.totalAmount || 0);
+                salesByPayment[method].count += 1;
+            });
+            
+            // Generate HTML report
+            return `
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold mb-2 neon-text">Sales Report</h3>
+                    <p>Period: ${formatDate(startDate)} to ${formatDate(endDate)}</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="glass p-3 rounded-lg">
+                        <h4 class="text-sm text-gray-400 mb-1">Total Sales</h4>
+                        <p class="text-2xl neon-text">${formatCurrency(totalAmount)}</p>
+                    </div>
+                    <div class="glass p-3 rounded-lg">
+                        <h4 class="text-sm text-gray-400 mb-1">Bills Generated</h4>
+                        <p class="text-2xl neon-text">${filteredSales.length}</p>
+                    </div>
+                    <div class="glass p-3 rounded-lg">
+                        <h4 class="text-sm text-gray-400 mb-1">Avg. Bill Value</h4>
+                        <p class="text-2xl neon-text">${formatCurrency(averageBillValue)}</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h4 class="text-lg font-semibold mb-3 neon-text">Daily Sales</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="border-b border-[var(--neon-blue)]">
+                                        <th class="pb-2">Date</th>
+                                        <th class="pb-2">Bills</th>
+                                        <th class="pb-2">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${dailySales.length > 0 ? 
+                                        dailySales.map(day => `
+                                            <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                                                <td class="py-2">${formatDate(day.date)}</td>
+                                                <td class="py-2">${day.billCount}</td>
+                                                <td class="py-2">${formatCurrency(day.totalAmount)}</td>
+                                            </tr>
+                                        `).join('') : 
+                                        '<tr><td colspan="3" class="py-4 text-center text-gray-400">No sales data for this period</td></tr>'
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-3 neon-text">Payment Methods</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="border-b border-[var(--neon-blue)]">
+                                        <th class="pb-2">Method</th>
+                                        <th class="pb-2">Bills</th>
+                                        <th class="pb-2">Amount</th>
+                                        <th class="pb-2">%</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${Object.values(salesByPayment).length > 0 ? 
+                                        Object.values(salesByPayment).map(payment => `
+                                            <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                                                <td class="py-2">${payment.method.charAt(0).toUpperCase() + payment.method.slice(1)}</td>
+                                                <td class="py-2">${payment.count}</td>
+                                                <td class="py-2">${formatCurrency(payment.totalAmount)}</td>
+                                                <td class="py-2">${totalAmount > 0 ? ((payment.totalAmount / totalAmount) * 100).toFixed(1) + '%' : '0%'}</td>
+                                            </tr>
+                                        `).join('') : 
+                                        '<tr><td colspan="4" class="py-4 text-center text-gray-400">No payment data for this period</td></tr>'
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-3 neon-text">Recent Bills</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-[var(--neon-blue)]">
+                                    <th class="pb-2">Date</th>
+                                    <th class="pb-2">Bill No</th>
+                                    <th class="pb-2">Customer</th>
+                                    <th class="pb-2">Items</th>
+                                    <th class="pb-2">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${filteredSales.length > 0 ? 
+                                    [...filteredSales]
+                                        .sort((a, b) => new Date(b.data.date) - new Date(a.data.date))
+                                        .slice(0, 10)
+                                        .map(sale => `
+                                            <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                                                <td class="py-2">${formatDate(sale.data.date)}</td>
+                                                <td class="py-2">${sale.data.billNumber || 'N/A'}</td>
+                                                <td class="py-2">${sale.data.customerName || 'Walk-in Customer'}</td>
+                                                <td class="py-2">${sale.data.items?.length || 0}</td>
+                                                <td class="py-2">${formatCurrency(sale.data.totalAmount)}</td>
+                                            </tr>
+                                        `).join('') : 
+                                    '<tr><td colspan="5" class="py-4 text-center text-gray-400">No sales data for this period</td></tr>'
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateInventoryReport(products, filteredSales, startDate, endDate) {
+            // Calculate statistics
+            const totalProducts = products.length;
+            const totalStock = products.reduce((sum, product) => sum + parseInt(product.data.stockQuantity || 0), 0);
+            const totalValue = products.reduce((sum, product) => 
+                sum + (parseInt(product.data.stockQuantity || 0) * parseFloat(product.data.sellingPrice || 0)), 0);
+            
+            // Identify low stock items
+            const lowStockThreshold = 5;
+            const lowStockItems = products.filter(product => parseInt(product.data.stockQuantity || 0) <= lowStockThreshold);
+            
+            // Calculate top selling products in this period
+            const productSales = {};
+            
+            // Initialize all products with zero sales
+            products.forEach(product => {
+                productSales[product.id] = {
+                    id: product.id,
+                    name: product.data.name,
+                    category: product.data.category,
+                    stockQuantity: parseInt(product.data.stockQuantity || 0),
+                    price: parseFloat(product.data.sellingPrice || 0),
+                    quantitySold: 0,
+                    revenue: 0
+                };
+            });
+            
+            // Count sales for each product
+            filteredSales.forEach(sale => {
+                sale.data.items?.forEach(item => {
+                    if (productSales[item.id]) {
+                        productSales[item.id].quantitySold += parseInt(item.quantity || 0);
+                        productSales[item.id].revenue += parseFloat(item.total || 0);
+                    }
+                });
+            });
+            
+            // Convert to array and sort by quantity sold
+            const productSalesArray = Object.values(productSales);
+            const topSellingProducts = [...productSalesArray]
+                .sort((a, b) => b.quantitySold - a.quantitySold)
+                .slice(0, 10);
+            
+            // Group products by category
+            const productsByCategory = {};
+            products.forEach(product => {
+                const category = product.data.category || 'Uncategorized';
+                if (!productsByCategory[category]) {
+                    productsByCategory[category] = {
+                        name: category,
+                        count: 0,
+                        stockValue: 0,
+                        lowStock: 0
+                    };
+                }
+                
+                productsByCategory[category].count += 1;
+                productsByCategory[category].stockValue += 
+                    parseInt(product.data.stockQuantity || 0) * parseFloat(product.data.sellingPrice || 0);
+                
+                if (parseInt(product.data.stockQuantity || 0) <= lowStockThreshold) {
+                    productsByCategory[category].lowStock += 1;
+                }
+            });
+            
+            // Generate HTML report
+            return `
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold mb-2 neon-text">Inventory Report</h3>
+                    <p>Generated on ${formatDate(new Date())}</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="glass p-3 rounded-lg">
+                        <h4 class="text-sm text-gray-400 mb-1">Total Products</h4>
+                        <p class="text-2xl neon-text">${totalProducts}</p>
+                    </div>
+                    <div class="glass p-3 rounded-lg">
+                        <h4 class="text-sm text-gray-400 mb-1">Total Stock</h4>
+                        <p class="text-2xl neon-text">${totalStock} items</p>
+                    </div>
+                    <div class="glass p-3 rounded-lg">
+                        <h4 class="text-sm text-gray-400 mb-1">Inventory Value</h4>
+                        <p class="text-2xl neon-text">${formatCurrency(totalValue)}</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <h4 class="text-lg font-semibold mb-3 neon-text">Top Selling Products</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="border-b border-[var(--neon-blue)]">
+                                        <th class="pb-2">Product</th>
+                                        <th class="pb-2">Category</th>
+                                        <th class="pb-2">Sold</th>
+                                        <th class="pb-2">Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${topSellingProducts.length > 0 ? 
+                                        topSellingProducts.map(product => `
+                                            <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                                                <td class="py-2">${product.name}</td>
+                                                <td class="py-2">${product.category || 'Uncategorized'}</td>
+                                                <td class="py-2">${product.quantitySold}</td>
+                                                <td class="py-2">${formatCurrency(product.revenue)}</td>
+                                            </tr>
+                                        `).join('') : 
+                                        '<tr><td colspan="4" class="py-4 text-center text-gray-400">No sales data for this period</td></tr>'
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-3 neon-text">Low Stock Items</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="border-b border-[var(--neon-blue)]">
+                                        <th class="pb-2">Product</th>
+                                        <th class="pb-2">Category</th>
+                                        <th class="pb-2">Stock</th>
+                                        <th class="pb-2">Reorder?</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${lowStockItems.length > 0 ? 
+                                        lowStockItems.map(product => `
+                                            <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                                                <td class="py-2">${product.data.name}</td>
+                                                <td class="py-2">${product.data.category || 'Uncategorized'}</td>
+                                                <td class="py-2 ${parseInt(product.data.stockQuantity || 0) <= 3 ? 'text-red-400' : ''}">${product.data.stockQuantity}</td>
+                                                <td class="py-2">${parseInt(product.data.stockQuantity || 0) <= 3 ? 'Urgent' : 'Soon'}</td>
+                                            </tr>
+                                        `).join('') : 
+                                        '<tr><td colspan="4" class="py-4 text-center text-gray-400">No low stock items found</td></tr>'
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-3 neon-text">Inventory by Category</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-[var(--neon-blue)]">
+                                    <th class="pb-2">Category</th>
+                                    <th class="pb-2">Products</th>
+                                    <th class="pb-2">Value</th>
+                                    <th class="pb-2">Low Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Object.values(productsByCategory).length > 0 ? 
+                                    Object.values(productsByCategory).map(category => `
+                                        <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                                            <td class="py-2">${category.name}</td>
+                                            <td class="py-2">${category.count}</td>
+                                            <td class="py-2">${formatCurrency(category.stockValue)}</td>
+                                            <td class="py-2">${category.lowStock}</td>
+                                        </tr>
+                                    `).join('') : 
+                                    '<tr><td colspan="4" class="py-4 text-center text-gray-400">No categories found</td></tr>'
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateCustomerReport(customers, filteredSales, startDate, endDate) {
+            // Calculate statistics
+            const totalCustomers = customers.length;
+            
+            // Find active customers (made purchase in this period)
+            const activeCustomerIds = new Set();
+            filteredSales.forEach(sale => {
+                if (sale.data.customerId) {
+                    activeCustomerIds.add(sale.data.customerId);
+                }
+            });
+            
+            const activeCustomerCount = activeCustomerIds.size;
+            const newCustomerCount = customers.filter(customer => {
+                const createdAt = new Date(customer.data.createdAt);
+                return createdAt >= startDate && createdAt <= endDate;
+            }).length;
+            
+            // Calculate sales by customer
+            const customerSales = {};
+            customers.forEach(customer => {
+                customerSales[customer.id] = {
+                    id: customer.id,
+                    name: customer.data.name,
+                    mobile: customer.data.mobile,
+                    email: customer.data.email,
+                    saleCount: 0,
+                    totalSpent: 0,
+                    lastPurchase: null
+                };
+            });
+            
+            // Calculate walk-in sales
+            let walkInTotal = 0;
+            let walkInCount = 0;
+            
+            // Count sales for each customer
+            filteredSales.forEach(sale => {
+                if (sale.data.customerId && customerSales[sale.data.customerId]) {
+                    const customer = customerSales[sale.data.customerId];
+                    customer.saleCount++;
+                    customer.totalSpent += parseFloat(sale.data.totalAmount || 0);
+                    
+                    const saleDate = new Date(sale.data.date);
+                    if (!customer.lastPurchase || saleDate > customer.lastPurchase) {
+                        customer.lastPurchase = saleDate;
+                    }
+                } else {
+                    walkInCount++;
+                    walkInTotal += parseFloat(sale.data.totalAmount || 0);
+                }
+            });
+            
+            // Convert to array and sort by total spent
+            const customerSalesArray = Object.values(customerSales).filter(c => c.saleCount > 0);
+            const topCustomers = [...customerSalesArray]
+                .sort((a, b) => b.totalSpent - a.totalSpent)
+                .slice(0, 10);
+            
+            // Generate HTML report
+            return `
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-bold mb-2 neon-text">Customer Report</h3>
+                    <p>Period: ${formatDate(startDate)} to ${formatDate(endDate)}</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="glass p-3 rounded-lg">
+                        <h4 class="text-sm text-gray-400 mb-1">Total Customers</h4>
+                        <p class="text-2xl neon-text">${totalCustomers}</p>
+                    </div>
+                    <div class="glass p-3 rounded-lg">
+                        <h4 class="text-sm text-gray-400 mb-1">Active Customers</h4>
+                        <p class="text-2xl neon-text">${activeCustomerCount}</p>
+                    </div>
+                    <div class="glass p-3 rounded-lg">
+                        <h4 class="text-sm text-gray-400 mb-1">New Customers</h4>
+                        <p class="text-2xl neon-text">${newCustomerCount}</p>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-3 neon-text">Top Customers by Spending</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-[var(--neon-blue)]">
+                                    <th class="pb-2">Customer</th>
+                                    <th class="pb-2">Contact</th>
+                                    <th class="pb-2">Purchases</th>
+                                    <th class="pb-2">Spent</th>
+                                    <th class="pb-2">Last Purchase</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${topCustomers.length > 0 ? 
+                                    topCustomers.map(customer => `
+                                        <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                                            <td class="py-2">${customer.name}</td>
+                                            <td class="py-2">${customer.mobile || customer.email || 'N/A'}</td>
+                                            <td class="py-2">${customer.saleCount}</td>
+                                            <td class="py-2">${formatCurrency(customer.totalSpent)}</td>
+                                            <td class="py-2">${customer.lastPurchase ? formatDate(customer.lastPurchase) : 'N/A'}</td>
+                                        </tr>
+                                    `).join('') : 
+                                    '<tr><td colspan="5" class="py-4 text-center text-gray-400">No customer purchase data for this period</td></tr>'
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="glass p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-3 neon-text">Customer vs. Walk-in Sales</h4>
+                        <div class="flex justify-between mb-3">
+                            <div>
+                                <p class="font-semibold">Registered Customers</p>
+                                <p class="text-2xl neon-text">
+                                    ${formatCurrency(customerSalesArray.reduce((sum, c) => sum + c.totalSpent, 0))}
+                                </p>
+                                <p class="text-sm">${customerSalesArray.reduce((sum, c) => sum + c.saleCount, 0)} purchases</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-semibold">Walk-in Customers</p>
+                                <p class="text-2xl neon-pink-text">${formatCurrency(walkInTotal)}</p>
+                                <p class="text-sm">${walkInCount} purchases</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass p-4 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-3 neon-text">New Customers Over Time</h4>
+                        <p class="text-center text-5xl neon-text">+${newCustomerCount}</p>
+                        <p class="text-center text-sm mt-2">new customers this period</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-3 neon-text">Recently Added Customers</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-[var(--neon-blue)]">
+                                    <th class="pb-2">Name</th>
+                                    <th class="pb-2">Contact</th>
+                                    <th class="pb-2">Added On</th>
+                                    <th class="pb-2">Orders</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${customers.length > 0 ? 
+                                    [...customers]
+                                        .filter(c => new Date(c.data.createdAt) >= startDate && new Date(c.data.createdAt) <= endDate)
+                                        .sort((a, b) => new Date(b.data.createdAt) - new Date(a.data.createdAt))
+                                        .map(customer => `
+                                            <tr class="border-b border-[rgba(0,243,255,0.2)]">
+                                                <td class="py-2">${customer.data.name}</td>
+                                                <td class="py-2">${customer.data.mobile || customer.data.email || 'N/A'}</td>
+                                                <td class="py-2">${formatDate(customer.data.createdAt)}</td>
+                                                <td class="py-2">${customerSales[customer.id]?.saleCount || 0}</td>
+                                            </tr>
+                                        `).join('') : 
+                                    '<tr><td colspan="4" class="py-4 text-center text-gray-400">No new customers in this period</td></tr>'
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function exportReportCSV() {
+            const reportType = document.getElementById('reportType').value;
+            alert(`CSV export for ${reportType} report would be generated in a full implementation.`);
+        }
+        
+        function printReport() {
+            window.print();
+        }
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
